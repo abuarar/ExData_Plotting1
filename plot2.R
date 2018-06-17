@@ -1,0 +1,15 @@
+UrlData<-"https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
+download.file(UrlData,destfile = "./data.zip")
+unzip("./data.zip",exdir = ".")
+
+library(lubridate)
+library(grDevices)
+test<-read.table("household_power_consumption.txt",sep = ";",header = TRUE)
+test2<-subset.data.frame(test,test$Date=="1/2/2007"|test$Date=="2/2/2007")
+test2$Global_active_power<-as.numeric(as.character(test2$Global_active_power))
+test2$DateTime<-paste(test2$Date," ",test2$Time)
+test2$DateTime<-dmy_hms(test2$DateTime)
+png(filename = "plot2.png")
+plot(test2$DateTime,test2$Global_active_power,xlab = "",ylab = "Global Active Power (kilowatts)",col="white",pch=20,lwd=0)
+lines(test2$DateTime,test2$Global_active_power,xlab = "",ylab = "Global Active Power (kilowatts)",pch=20,lwd=0)
+dev.off(dev.cur())
